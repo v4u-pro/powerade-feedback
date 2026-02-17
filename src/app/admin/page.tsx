@@ -137,14 +137,19 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/feedback")
-      .then((r) => r.json())
-      .then((data) => {
-        setStats(data.stats);
-        setDistribution(data.distribution);
-        setFeedback(data.feedback);
-      })
-      .finally(() => setLoading(false));
+    const fetchData = () => {
+      fetch("/api/feedback")
+        .then((r) => r.json())
+        .then((data) => {
+          setStats(data.stats);
+          setDistribution(data.distribution);
+          setFeedback(data.feedback);
+        })
+        .finally(() => setLoading(false));
+    };
+    fetchData();
+    const interval = setInterval(fetchData, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   if (loading) {
