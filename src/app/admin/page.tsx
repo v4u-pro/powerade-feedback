@@ -162,7 +162,7 @@ export default function AdminPage() {
         alt="Powerade"
         width={800}
         height={200}
-        className="w-full object-cover max-h-[100px] md:max-h-[80px]"
+        className="w-full h-auto"
         priority
       />
 
@@ -242,7 +242,7 @@ export default function AdminPage() {
         alt="Fuel Your Power with Powerade"
         width={800}
         height={200}
-        className="w-full object-cover max-h-[100px] md:max-h-[80px]"
+        className="w-full h-auto"
       />
     </div>
   );

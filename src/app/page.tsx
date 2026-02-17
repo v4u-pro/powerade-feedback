@@ -54,7 +54,7 @@ export default function FeedbackPage() {
           alt="Powerade"
           width={800}
           height={200}
-          className="w-full object-cover max-h-[100px] md:max-h-[80px]"
+          className="w-full h-auto"
           priority
         />
         <div className="flex-1 flex items-center justify-center px-4">
@@ -79,7 +79,7 @@ export default function FeedbackPage() {
           alt="Fuel Your Power with Powerade"
           width={800}
           height={200}
-          className="w-full object-cover max-h-[100px] md:max-h-[80px]"
+          className="w-full h-auto"
         />
       </div>
     );
@@ -92,7 +92,7 @@ export default function FeedbackPage() {
         alt="Powerade"
         width={800}
         height={200}
-        className="w-full object-cover max-h-[100px] md:max-h-[80px]"
+        className="w-full h-auto"
         priority
       />
 
@@ -148,7 +148,7 @@ export default function FeedbackPage() {
         alt="Fuel Your Power with Powerade"
         width={800}
         height={200}
-        className="w-full object-cover max-h-[100px] md:max-h-[80px]"
+        className="w-full h-auto"
       />
     </div>
   );
