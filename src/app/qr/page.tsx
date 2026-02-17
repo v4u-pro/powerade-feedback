@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export default function QRPage() {
   const [qrDataUrl, setQrDataUrl] = useState<string>("");
   const [feedbackUrl, setFeedbackUrl] = useState<string>("");
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const url = window.location.origin;
@@ -14,12 +16,26 @@ export default function QRPage() {
 
     import("qrcode").then((QRCode) => {
       QRCode.toDataURL(url, {
-        width: 300,
+        width: 600,
         margin: 2,
         color: { dark: "#000000", light: "#ffffff" },
       }).then(setQrDataUrl);
     });
   }, []);
+
+  const downloadPng = async () => {
+    if (!cardRef.current) return;
+    const html2canvas = (await import("html2canvas-pro")).default;
+    const canvas = await html2canvas(cardRef.current, {
+      backgroundColor: null,
+      scale: 3,
+      useCORS: true,
+    });
+    const link = document.createElement("a");
+    link.download = "powerade-qr-code.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  };
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
@@ -32,21 +48,37 @@ export default function QRPage() {
         priority
       />
 
-      <div className="flex-1 flex items-center justify-center px-4 py-8">
-        <Card className="bg-zinc-900 border-zinc-800 max-w-sm w-full">
-          <CardContent className="pt-6 pb-6 flex flex-col items-center space-y-4">
-            <h1 className="text-xl font-bold text-white">Scan to Give Feedback</h1>
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 gap-4">
+        <div
+          ref={cardRef}
+          style={{ borderRadius: 24, overflow: "hidden", background: "#18181b", padding: 32 }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
+            <p style={{ fontSize: 22, fontWeight: 700, color: "#ffffff", margin: 0 }}>
+              Scan to Give Feedback
+            </p>
             {qrDataUrl && (
               <img
                 src={qrDataUrl}
                 alt="QR Code"
-                className="w-64 h-64 rounded-lg"
+                style={{ width: 260, height: 260, borderRadius: 12 }}
               />
             )}
-            <p className="text-zinc-400 text-xs text-center break-all">{feedbackUrl}</p>
-            <p className="text-zinc-500 text-xs">Print this QR code for stadium visitors</p>
-          </CardContent>
-        </Card>
+            <p style={{ fontSize: 11, color: "#a1a1aa", margin: 0, textAlign: "center" }}>
+              {feedbackUrl}
+            </p>
+            <p style={{ fontSize: 11, color: "#71717a", margin: 0 }}>
+              Print this QR code for stadium visitors
+            </p>
+          </div>
+        </div>
+
+        <Button
+          onClick={downloadPng}
+          className="bg-blue-600 hover:bg-blue-700"
+        >
+          Download PNG
+        </Button>
       </div>
 
       <Image
