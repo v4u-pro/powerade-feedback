@@ -1,65 +1,149 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+import { useState } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+const questions = [
+  {
+    key: "taste",
+    label: "How would you rate this product in taste?",
+  },
+  {
+    key: "tryAgain",
+    label: "Would you be willing to try this again outside of the stadium?",
+  },
+  {
+    key: "hydrating",
+    label: "Do you feel this product is hydrating enough?",
+  },
+];
+
+export default function FeedbackPage() {
+  const [ratings, setRatings] = useState<Record<string, number>>({});
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const setRating = (key: string, value: number) => {
+    setRatings((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const allAnswered = questions.every((q) => ratings[q.key]);
+
+  const handleSubmit = async () => {
+    if (!allAnswered) return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(ratings),
+      });
+      if (res.ok) setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-black flex flex-col">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
+          src="/banner-top.png"
+          alt="Powerade"
+          width={800}
+          height={200}
+          className="w-full object-cover"
           priority
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+        <div className="flex-1 flex items-center justify-center px-4">
+          <Card className="w-full max-w-md bg-zinc-900 border-zinc-800">
+            <CardContent className="pt-8 pb-8 text-center space-y-4">
+              <div className="text-5xl">&#10003;</div>
+              <h2 className="text-2xl font-bold text-white">Thank You!</h2>
+              <p className="text-zinc-400">
+                Your feedback has been submitted successfully.
+              </p>
+            </CardContent>
+          </Card>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+        <Image
+          src="/banner-bottom.png"
+          alt="Fuel Your Power with Powerade"
+          width={800}
+          height={200}
+          className="w-full object-cover"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-black flex flex-col">
+      <Image
+        src="/banner-top.png"
+        alt="Powerade"
+        width={800}
+        height={200}
+        className="w-full object-cover"
+        priority
+      />
+
+      <div className="flex-1 px-4 py-6 space-y-4 max-w-md mx-auto w-full">
+        <h1 className="text-xl font-bold text-white text-center">
+          Share Your Feedback
+        </h1>
+        <p className="text-zinc-400 text-sm text-center">
+          Rate each question from 1 (lowest) to 5 (highest)
+        </p>
+
+        {questions.map((q, idx) => (
+          <Card key={q.key} className="bg-zinc-900 border-zinc-800">
+            <CardContent className="pt-5 pb-5 space-y-3">
+              <p className="text-sm font-medium text-zinc-200">
+                {idx + 1}. {q.label}
+              </p>
+              <div className="flex gap-2 justify-center">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    key={n}
+                    onClick={() => setRating(q.key, n)}
+                    className={`w-12 h-12 rounded-lg text-lg font-bold transition-all
+                      ${
+                        ratings[q.key] === n
+                          ? "bg-blue-600 text-white scale-110 shadow-lg shadow-blue-600/30"
+                          : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white"
+                      }`}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+              <div className="flex justify-between text-xs text-zinc-500 px-1">
+                <span>Poor</span>
+                <span>Excellent</span>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+
+        <Button
+          onClick={handleSubmit}
+          disabled={!allAnswered || loading}
+          className="w-full h-12 text-base font-semibold bg-blue-600 hover:bg-blue-700 disabled:opacity-40"
+        >
+          {loading ? "Submitting..." : "Submit Feedback"}
+        </Button>
+      </div>
+
+      <Image
+        src="/banner-bottom.png"
+        alt="Fuel Your Power with Powerade"
+        width={800}
+        height={200}
+        className="w-full object-cover"
+      />
     </div>
   );
 }
