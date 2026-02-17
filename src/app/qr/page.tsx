@@ -28,7 +28,7 @@ export default function QRPage() {
         alt="Powerade"
         width={800}
         height={200}
-        className="w-full object-cover"
+        className="w-full object-cover max-h-[100px] md:max-h-[80px]"
         priority
       />
 
@@ -54,7 +54,7 @@ export default function QRPage() {
         alt="Fuel Your Power with Powerade"
         width={800}
         height={200}
-        className="w-full object-cover"
+        className="w-full object-cover max-h-[100px] md:max-h-[80px]"
       />
     </div>
   );
