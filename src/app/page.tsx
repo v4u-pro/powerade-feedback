@@ -65,6 +65,12 @@ export default function FeedbackPage() {
               <p className="text-zinc-400">
                 Your feedback has been submitted successfully.
               </p>
+              <Button
+                onClick={() => { setSubmitted(false); setRatings({}); }}
+                className="bg-blue-600 hover:bg-blue-700 mt-2"
+              >
+                Rate Again
+              </Button>
             </CardContent>
           </Card>
         </div>
