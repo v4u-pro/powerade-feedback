@@ -16,7 +16,7 @@ export default function QRPage() {
       QRCode.toDataURL(url, {
         width: 300,
         margin: 2,
-        color: { dark: "#1d4ed8", light: "#000000" },
+        color: { dark: "#000000", light: "#ffffff" },
       }).then(setQrDataUrl);
     });
   }, []);
@@ -33,19 +33,17 @@ export default function QRPage() {
       />
 
       <div className="flex-1 flex items-center justify-center px-4 py-8">
-        <Card className="bg-zinc-900 border-blue-800/50 max-w-sm w-full shadow-lg shadow-blue-900/20">
+        <Card className="bg-zinc-900 border-zinc-800 max-w-sm w-full">
           <CardContent className="pt-6 pb-6 flex flex-col items-center space-y-4">
-            <h1 className="text-xl font-bold text-blue-400">Scan to Give Feedback</h1>
+            <h1 className="text-xl font-bold text-white">Scan to Give Feedback</h1>
             {qrDataUrl && (
-              <div className="p-3 bg-black rounded-xl border border-blue-800/30">
-                <img
-                  src={qrDataUrl}
-                  alt="QR Code"
-                  className="w-60 h-60 rounded-lg"
-                />
-              </div>
+              <img
+                src={qrDataUrl}
+                alt="QR Code"
+                className="w-64 h-64 rounded-lg"
+              />
             )}
-            <p className="text-blue-300/70 text-xs text-center break-all">{feedbackUrl}</p>
+            <p className="text-zinc-400 text-xs text-center break-all">{feedbackUrl}</p>
             <p className="text-zinc-500 text-xs">Print this QR code for stadium visitors</p>
           </CardContent>
         </Card>
