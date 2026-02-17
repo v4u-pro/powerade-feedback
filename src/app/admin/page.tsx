@@ -135,6 +135,7 @@ export default function AdminPage() {
   const [distribution, setDistribution] = useState<Distribution | null>(null);
   const [feedback, setFeedback] = useState<FeedbackRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const fetchData = () => {
@@ -223,7 +224,7 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {feedback.slice(0, 50).map((row) => (
+                    {(showAll ? feedback : feedback.slice(0, 20)).map((row) => (
                       <tr key={row.id} className="border-b border-zinc-800/50 text-zinc-300">
                         <td className="px-4 py-2">{row.id}</td>
                         <td className="px-4 py-2 text-center">{row.taste}</td>
@@ -237,6 +238,16 @@ export default function AdminPage() {
                   </tbody>
                 </table>
               </div>
+              {feedback.length > 20 && (
+                <div className="p-3 text-center border-t border-zinc-800">
+                  <button
+                    onClick={() => setShowAll(!showAll)}
+                    className="text-sm text-blue-400 hover:text-blue-300"
+                  >
+                    {showAll ? "Show Less" : `View All (${feedback.length})`}
+                  </button>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}
