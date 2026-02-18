@@ -11,12 +11,12 @@ const questions = [
     label: "How would you rate this product in taste?",
   },
   {
-    key: "tryAgain",
-    label: "Would you be willing to try this again outside of the stadium?",
-  },
-  {
     key: "hydrating",
     label: "Do you feel this product is hydrating enough?",
+  },
+  {
+    key: "tryAgain",
+    label: "Would you be willing to try this again outside of the stadium?",
   },
 ];
 
