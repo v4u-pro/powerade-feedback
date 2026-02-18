@@ -16,7 +16,7 @@ export default function QRPage() {
 
     import("qrcode").then((QRCode) => {
       QRCode.toDataURL(url, {
-        width: 600,
+        width: 2000,
         margin: 2,
         color: { dark: "#000000", light: "#ffffff" },
       }).then(setQrDataUrl);
@@ -28,7 +28,7 @@ export default function QRPage() {
     const html2canvas = (await import("html2canvas-pro")).default;
     const canvas = await html2canvas(cardRef.current, {
       backgroundColor: null,
-      scale: 3,
+      scale: 5,
       useCORS: true,
     });
     const link = document.createElement("a");
@@ -61,7 +61,7 @@ export default function QRPage() {
               <img
                 src={qrDataUrl}
                 alt="QR Code"
-                style={{ width: 260, height: 260, borderRadius: 12 }}
+                style={{ width: 400, height: 400, borderRadius: 12 }}
               />
             )}
             <p style={{ fontSize: 11, color: "#a1a1aa", margin: 0, textAlign: "center" }}>
