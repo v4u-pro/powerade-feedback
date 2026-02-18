@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: powerade-feedback
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DB_PATH
+        value: /app/data/feedback.db
+    disk:
+      name: feedback-data
+      mountPath: /app/data
+      sizeGB: 1
