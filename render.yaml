@@ -7,7 +7,3 @@ services:
     envVars:
       - key: DB_PATH
         value: /app/data/feedback.db
-    disk:
-      name: feedback-data
-      mountPath: /app/data
-      sizeGB: 1
