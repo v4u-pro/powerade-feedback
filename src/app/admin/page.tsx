@@ -45,6 +45,18 @@ interface FeedbackRow {
 
 const COLORS = ["#ef4444", "#f97316", "#eab308", "#22c55e", "#3b82f6"];
 
+function toIST(utcStr: string): string {
+  const utc = new Date(utcStr + "Z");
+  return utc.toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
 const QUESTION_LABELS: Record<string, string> = {
   taste: "Taste Rating",
   try_again: "Try Again Outside Stadium",
@@ -231,7 +243,7 @@ export default function AdminPage() {
                         <td className="px-4 py-2 text-center">{row.try_again}</td>
                         <td className="px-4 py-2 text-center">{row.hydrating}</td>
                         <td className="px-4 py-2 text-right text-zinc-500 text-xs">
-                          {row.created_at}
+                          {toIST(row.created_at)}
                         </td>
                       </tr>
                     ))}
