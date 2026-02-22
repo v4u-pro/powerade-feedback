@@ -4,7 +4,7 @@ import { insertFeedback, getAllFeedback, getStats, getRatingDistribution } from 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { taste, tryAgain, hydrating } = body;
+    const { taste, tryAgain, hydrating, comments } = body;
 
     if (
       !taste || !tryAgain || !hydrating ||
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid ratings. Must be 1-5." }, { status: 400 });
     }
 
-    insertFeedback(taste, tryAgain, hydrating);
+    insertFeedback(taste, tryAgain, hydrating, comments || "");
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "Failed to save feedback" }, { status: 500 });

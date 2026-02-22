@@ -15,17 +15,24 @@ function getDb() {
         taste INTEGER NOT NULL CHECK(taste BETWEEN 1 AND 5),
         try_again INTEGER NOT NULL CHECK(try_again BETWEEN 1 AND 5),
         hydrating INTEGER NOT NULL CHECK(hydrating BETWEEN 1 AND 5),
-        created_at TEXT DEFAULT (datetime('now'))
+        created_at TEXT DEFAULT (datetime('now')),
+        comments TEXT DEFAULT ''
       )
     `);
+    // Add comments column if missing (existing DBs)
+    try {
+      db.exec(`ALTER TABLE feedback ADD COLUMN comments TEXT DEFAULT ''`);
+    } catch {
+      // column already exists
+    }
   }
   return db;
 }
 
-export function insertFeedback(taste: number, tryAgain: number, hydrating: number) {
+export function insertFeedback(taste: number, tryAgain: number, hydrating: number, comments: string = "") {
   const db = getDb();
-  const stmt = db.prepare("INSERT INTO feedback (taste, try_again, hydrating) VALUES (?, ?, ?)");
-  return stmt.run(taste, tryAgain, hydrating);
+  const stmt = db.prepare("INSERT INTO feedback (taste, try_again, hydrating, comments) VALUES (?, ?, ?, ?)");
+  return stmt.run(taste, tryAgain, hydrating, comments);
 }
 
 export function getAllFeedback() {
@@ -36,6 +43,7 @@ export function getAllFeedback() {
     try_again: number;
     hydrating: number;
     created_at: string;
+    comments: string;
   }[];
 }
 

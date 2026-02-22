@@ -22,6 +22,7 @@ const questions = [
 
 export default function FeedbackPage() {
   const [ratings, setRatings] = useState<Record<string, number>>({});
+  const [comments, setComments] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -38,7 +39,7 @@ export default function FeedbackPage() {
       const res = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(ratings),
+        body: JSON.stringify({ ...ratings, comments }),
       });
       if (res.ok) setSubmitted(true);
     } finally {
@@ -66,7 +67,7 @@ export default function FeedbackPage() {
                 Your feedback has been submitted successfully.
               </p>
               <Button
-                onClick={() => { setSubmitted(false); setRatings({}); }}
+                onClick={() => { setSubmitted(false); setRatings({}); setComments(""); }}
                 className="bg-blue-600 hover:bg-blue-700 mt-2"
               >
                 Rate Again
@@ -133,6 +134,22 @@ export default function FeedbackPage() {
             </CardContent>
           </Card>
         ))}
+
+        <Card className="bg-zinc-900 border-zinc-800">
+          <CardContent className="pt-5 pb-5 space-y-3">
+            <p className="text-sm font-medium text-zinc-200">
+              Comments (optional)
+            </p>
+            <textarea
+              value={comments}
+              onChange={(e) => setComments(e.target.value)}
+              placeholder="Write your feedback here..."
+              maxLength={500}
+              rows={3}
+              className="w-full rounded-lg bg-zinc-800 text-zinc-200 text-sm p-3 border border-zinc-700 focus:border-blue-600 focus:outline-none resize-none placeholder:text-zinc-500"
+            />
+          </CardContent>
+        </Card>
 
         <Button
           onClick={handleSubmit}

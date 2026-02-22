@@ -41,6 +41,7 @@ interface FeedbackRow {
   try_again: number;
   hydrating: number;
   created_at: string;
+  comments: string;
 }
 
 const COLORS = ["#ef4444", "#f97316", "#eab308", "#22c55e", "#3b82f6"];
@@ -232,6 +233,7 @@ export default function AdminPage() {
                       <th className="px-4 py-2 text-center">Taste</th>
                       <th className="px-4 py-2 text-center">Try Again</th>
                       <th className="px-4 py-2 text-center">Hydrating</th>
+                      <th className="px-4 py-2 text-left">Comments</th>
                       <th className="px-4 py-2 text-right">Time</th>
                     </tr>
                   </thead>
@@ -242,7 +244,10 @@ export default function AdminPage() {
                         <td className="px-4 py-2 text-center">{row.taste}</td>
                         <td className="px-4 py-2 text-center">{row.try_again}</td>
                         <td className="px-4 py-2 text-center">{row.hydrating}</td>
-                        <td className="px-4 py-2 text-right text-zinc-500 text-xs">
+                        <td className="px-4 py-2 text-left text-zinc-400 text-xs max-w-[200px] truncate">
+                          {row.comments || "—"}
+                        </td>
+                        <td className="px-4 py-2 text-right text-zinc-500 text-xs whitespace-nowrap">
                           {toIST(row.created_at)}
                         </td>
                       </tr>
